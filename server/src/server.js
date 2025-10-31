@@ -22,10 +22,38 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan("dev"));
 
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Root endpoint
+ *     tags: [General]
+ *     responses:
+ *       200:
+ *         description: API is running
+ */
 app.get("/", (req, res) => {
 	return res.json("CRM API running");
 });
 
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     summary: Health check endpoint
+ *     tags: [General]
+ *     responses:
+ *       200:
+ *         description: Service is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: ok
+ */
 app.get("/health", (req, res) => {
 	return res.status(200).json({ status: "ok" });
 });

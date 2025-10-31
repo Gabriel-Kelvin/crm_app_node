@@ -1,4 +1,10 @@
 import swaggerJsdoc from "swagger-jsdoc";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const projectRoot = join(__dirname, "../..");
 
 const options = {
 	definition: {
@@ -36,7 +42,10 @@ const options = {
 			}
 		}
 	},
-	apis: ["./src/routes/*.js", "./src/server.js"]
+	apis: [
+		join(projectRoot, "src/routes/*.js"),
+		join(projectRoot, "src/server.js")
+	]
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
