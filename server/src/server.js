@@ -2,12 +2,14 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
 import { router as authRouter } from "./routes/auth.js";
 import { router as leadsRouter } from "./routes/leads.js";
 import { router as dealsRouter } from "./routes/deals.js";
 import { router as tasksRouter } from "./routes/tasks.js";
 import { router as usersRouter } from "./routes/users.js";
 import { settings } from "./shared/settings.js";
+import { swaggerSpec } from "./config/swagger.js";
 
 dotenv.config();
 
@@ -27,6 +29,12 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => {
 	return res.status(200).json({ status: "ok" });
 });
+
+// Swagger UI documentation
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+	customCss: ".swagger-ui .topbar { display: none }",
+	customSiteTitle: "CRM API Documentation"
+}));
 
 app.use("/api/auth", authRouter);
 app.use("/api/leads", leadsRouter);

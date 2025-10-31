@@ -5,6 +5,38 @@ import { requireAuth } from "../middleware/auth.js";
 
 export const router = Router();
 
+/**
+ * @swagger
+ * /api/auth/signup:
+ *   post:
+ *     summary: Create a new user account
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *               - full_name
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 minLength: 8
+ *               full_name:
+ *                 type: string
+ *                 minLength: 2
+ *     responses:
+ *       200:
+ *         description: User created successfully
+ *       400:
+ *         description: Invalid request or user already exists
+ */
 router.post("/signup", async (req, res) => {
 	try {
 		const { email, password, full_name } = req.body || {};
@@ -36,6 +68,33 @@ router.post("/signup", async (req, res) => {
 	}
 });
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Authenticate user and get JWT token
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful, returns JWT token
+ *       401:
+ *         description: Invalid credentials
+ */
 router.post("/login", async (req, res) => {
 	try {
 		const { email, password } = req.body || {};
@@ -59,6 +118,20 @@ router.post("/login", async (req, res) => {
 	}
 });
 
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Get current authenticated user information
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Current user information
+ *       401:
+ *         description: Not authenticated
+ */
 router.get("/me", requireAuth, async (req, res) => {
 	try {
 		const current = req.user;
