@@ -6,9 +6,9 @@ services:
     env_file:
       - ./server/.env
     environment:
-      - PORT=8008
+      - PORT=9010
     ports:
-      - 8008:8008
+      - 9010:9010
     restart: unless-stopped
   frontend:
     build:
@@ -17,5 +17,5 @@ services:
     depends_on:
       - backend
     ports:
-      - 3003:80
+      - 9011:80
     restart: unless-stopped
